@@ -28,5 +28,14 @@ namespace dapper_demo.Controllers
         {
             return Ok(await _noteRepository.GetNotes());
         }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Post([FromBody] Note note)
+        {
+            await _noteRepository.Create(note);
+            return Ok();
+        }
+
     }
 }

@@ -11,6 +11,7 @@ namespace dapper_demo.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public User User { get; set; }
+        public int UserID { get; set; }
         public Note()
         {
 

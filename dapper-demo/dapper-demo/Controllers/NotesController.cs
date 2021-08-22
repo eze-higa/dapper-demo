@@ -1,4 +1,5 @@
-﻿using dapper_demo.Repositories;
+﻿using dapper_demo.Entities;
+using dapper_demo.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,7 @@ namespace dapper_demo.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Note>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             return Ok(await _noteRepository.GetNotes());

@@ -11,6 +11,7 @@ namespace dapper_demo.Controllers
     [ApiController]
     public class ErrorController : ControllerBase
     {
+        [HttpGet]
         [Route("/error")]
         public IActionResult Error() => Problem();
     }

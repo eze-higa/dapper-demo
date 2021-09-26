@@ -9,6 +9,7 @@ namespace dapper_demo.Repositories
     public interface INoteRepository
     {
         Task<IEnumerable<Note>> GetNotes();
-        Task Create(Note note);
+        Task<Note> Create(Note note);
+        Task<Note> GetNoteById(int id);
     }
 }

@@ -1,4 +1,6 @@
-﻿using dapper_demo.Entities;
+﻿using AutoMapper;
+using dapper_demo.DTOs.NoteDTOs;
+using dapper_demo.Entities;
 using dapper_demo.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,25 +18,45 @@ namespace dapper_demo.Controllers
     {
         private readonly INoteRepository _noteRepository;
         private readonly ILogger<NotesController> _logger;
-        public NotesController(ILogger<NotesController> logger,INoteRepository noteRepository)
+        private readonly IMapper _mapper;
+        public NotesController(ILogger<NotesController> logger,INoteRepository noteRepository, IMapper mapper)
         {
             this._logger = logger;
             this._noteRepository = noteRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Note>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<NoteReadDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _noteRepository.GetNotes());
+            var notes = await _noteRepository.GetNotes();
+            return Ok(_mapper.Map<IEnumerable<NoteReadDTO>>(notes));
+        }
+
+        [HttpGet("{id}", Name = "GetNoteById")]
+        [ProducesResponseType(typeof(NoteReadDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetNoteById(int id)
+        {
+            var note = await _noteRepository.GetNoteById(id);
+
+            if(note == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<NoteReadDTO>(note));
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Post([FromBody] Note note)
+        [ProducesResponseType(typeof(NoteReadDTO), StatusCodes.Status201Created)]
+        public async Task<IActionResult> Post([FromBody] NoteWriteDTO noteDto)
         {
-            await _noteRepository.Create(note);
-            return Ok();
+            Note note = _mapper.Map<Note>(noteDto);
+            var createdNote = await _noteRepository.Create(note);
+
+            return CreatedAtRoute(nameof(GetNoteById), new { id = note.Id }, _mapper.Map<NoteReadDTO>(createdNote));
         }
 
     }

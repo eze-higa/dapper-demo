@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace dapper_demo.Repositories
 {
     public class UserRepository : IUserRepository
@@ -15,7 +16,7 @@ namespace dapper_demo.Repositories
         {
             this._context = context;
         }
-
+        
         public async Task Create(string username)
         {
             string query = "INSERT INTO Users(username) VALUES (@username)";

@@ -36,6 +36,9 @@ namespace dapper_demo
             services.AddSingleton<IDapperContext, DapperContext>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

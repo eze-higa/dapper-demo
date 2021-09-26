@@ -20,7 +20,9 @@ namespace dapper_demo
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel(options => options.AddServerHeader = false)
+                    .UseIISIntegration()
+                    .UseStartup<Startup>();
                 });
     }
 }

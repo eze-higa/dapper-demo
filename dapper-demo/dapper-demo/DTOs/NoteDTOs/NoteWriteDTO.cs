@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace dapper_demo.DTOs.NoteDTOs
 {
-    public class NoteWriteDTO
+    public record NoteWriteDTO
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int UserID { get; set; }
+        public string Title { get; init; }
+        public string Description { get; init; }
+        public int UserID { get; init; }
     }
 }

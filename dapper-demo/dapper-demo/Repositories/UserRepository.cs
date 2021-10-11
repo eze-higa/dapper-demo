@@ -17,12 +17,12 @@ namespace dapper_demo.Repositories
             this._context = context;
         }
         
-        public async Task Create(string username)
+        public async Task Create(User user)
         {
             string query = "INSERT INTO Users(username) VALUES (@username)";
             using (var connection = _context.CreateConnection())
             {
-                int rowsAffected = await connection.ExecuteAsync(query, new { username = username });
+                int rowsAffected = await connection.ExecuteAsync(query, new { username = user.Username });
             }                
         }
 

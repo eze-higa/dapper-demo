@@ -30,7 +30,7 @@ namespace dapper_demo.Controllers
         [ProducesResponseType(typeof(IList<UserReadDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get() => Ok(_mapper.Map<List<UserReadDTO>> (await this._userRepository.GetUsers()));
 
-        [HttpGet("id/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserReadDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById(int id) {
             User user = await _userRepository.GetUserById(id);
@@ -42,20 +42,7 @@ namespace dapper_demo.Controllers
 
             return Ok(_mapper.Map<UserReadDTO>(user));
         }
-
-        [HttpGet("username/{username}")]
-        [ProducesResponseType(typeof(UserReadDTO), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByUsername(string username) {
-            User user = await _userRepository.GetUserByUsername(username);
-
-            if(user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<UserReadDTO>(user));
-        }
-
+        
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
